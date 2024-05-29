@@ -54,7 +54,7 @@ try {
             $checker->compare($first, $second);
             break;
         default:
-            exit(1);
+            $parser->displayUsage(1);
     }
 } catch (Exception $exc) {
     $parser->displayError($exc->getMessage());

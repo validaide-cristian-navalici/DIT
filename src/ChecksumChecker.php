@@ -31,7 +31,7 @@ class ChecksumChecker
 
     private function displayDiffContent(array $firstData, array $secondData): void
     {
-        printf("CHECKSUMS Differences   \n");
+        printf("CHECKSUMS Differences \n");
         foreach($firstData as $firstKey => $firstSum) {
             $secondSum = $secondData[$firstKey] ?? null;
             if ($secondSum && ($firstSum != $secondSum)) {
