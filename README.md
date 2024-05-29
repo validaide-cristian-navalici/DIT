@@ -21,11 +21,11 @@ Create the .env file
 
 Add the following variables in the env file with their particular values:
 
->DB_USER=<user>
+>DB_USER=user
 >
->DB_PASSWORD=<password>
+>DB_PASSWORD=password
 > 
->DB_NAME=<MySQL_DB>
+>DB_NAME=MySQL_DB
 
 ## How to use
 
