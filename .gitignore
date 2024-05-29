@@ -1,0 +1,4 @@
+checksums*
+.env
+vendor
+.idea
