@@ -9,8 +9,8 @@ class ChecksumChecker
         $firstData  = json_decode(file_get_contents($firstFilename), true);
         $secondData = json_decode(file_get_contents($secondFilename), true);
 
-        $onlyInFirst = array_diff_assoc($firstData, $secondData);
-        $onlyInSecond = array_diff_assoc($secondData, $firstData);
+        $onlyInFirst = array_diff_key($firstData, $secondData);
+        $onlyInSecond = array_diff_key($secondData, $firstData);
 
         $this->displayDiffTables($onlyInFirst, $firstFilename);
         $this->displayDiffTables($onlyInSecond, $secondFilename);
@@ -32,11 +32,18 @@ class ChecksumChecker
     private function displayDiffContent(array $firstData, array $secondData): void
     {
         printf("CHECKSUMS Differences \n");
+        $hasAnyDiff = false;
+
         foreach($firstData as $firstKey => $firstSum) {
             $secondSum = $secondData[$firstKey] ?? null;
             if ($secondSum && ($firstSum != $secondSum)) {
-                printf("%-30s Values: %12s <> %12s\n", $firstKey, $firstSum, $secondSum);
+                printf("%-50s %12s <> %12s\n", $firstKey, $firstSum, $secondSum);
+                $hasAnyDiff = true;
             }
+        }
+
+        if (!$hasAnyDiff) {
+            printf("All things look good, no differences found.\n");
         }
     }
 }

@@ -3,9 +3,9 @@
 namespace Dit;
 
 use DateTime;
+use Exception;
 use PDO;
 use PDOException;
-use Exception;
 
 class ChecksumGenerator
 {
@@ -19,10 +19,11 @@ class ChecksumGenerator
     public function __construct(
         private readonly string $dbName,
         private readonly string $dbUser,
-        private readonly string $dbPass
+        private readonly string $dbPass,
+        private readonly string $host
     )
     {
-        $this->dsn     = sprintf("mysql:host=localhost;dbname=%s;charset=utf8", $this->dbName);
+        $this->dsn     = sprintf("mysql:host=%s;dbname=%s;charset=utf8", $host, $this->dbName);
         $this->options = [
             PDO::ATTR_ERRMODE          => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_EMULATE_PREPARES => false,
@@ -36,7 +37,7 @@ class ChecksumGenerator
             $checksums     = $this->generateChecksums($allTables);
             $generatedFile = $this->output($checksums);
 
-            printf("Generated file: %s\n", $generatedFile);
+            $this->display(sprintf("Generated file: %s\n", $generatedFile));
         } catch (Exception $e) {
             echo "ERROR: %s" . $e->getMessage();
             exit(1);
@@ -51,9 +52,7 @@ class ChecksumGenerator
 
     private function getAllTables(): array
     {
-        if ($this->verboseMode) {
-            echo sprintf("Grabbing all the tables...\n");
-        }
+        $this->display("Grabbing all the tables...\n", true);
 
         $conn = $this->createConnection();
 
@@ -65,9 +64,7 @@ class ChecksumGenerator
 
     private function generateChecksums(array $tables): array
     {
-        if ($this->verboseMode) {
-            echo sprintf("Generating checksums...\n");
-        }
+        $this->display("Generating checksums...\n");
 
         $conn      = $this->createConnection();
         $checksums = [];
@@ -76,12 +73,12 @@ class ChecksumGenerator
             $query  = $conn->query(sprintf("CHECKSUM TABLE %s", $table));
             $result = $query->fetchColumn(1);
 
-            if ($this->verboseMode) {
-                echo sprintf("Parsing table: %s -> %s\n", $table, $result);
-            }
+            $this->display(sprintf("Parsing table: %-50s -> %-12s\n", $table, $result), true);
 
             $checksums[$table] = $result;
         }
+
+        $this->display("Done.\n");
 
         return $checksums;
     }
@@ -108,6 +105,13 @@ class ChecksumGenerator
         } catch (PDOException $e) {
             printf("ERROR: %s", $e->getMessage());
             exit(1);
+        }
+    }
+
+    private function display(string $text, bool $verboseAware = false): void
+    {
+        if (($verboseAware && $this->verboseMode) || (!$verboseAware)) {
+            printf($text);
         }
     }
 }

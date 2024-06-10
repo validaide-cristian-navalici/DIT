@@ -2,7 +2,7 @@
 
 ## Description
 
-This is a tool that generates a file with all the tables in a MySQL Database and their associated checksums. Further more, this file can
+This is a tool that generates a file with all the tables in a MySQL Database and their associated checksums. Furthermore, this file can
 be used in a comparison, to find out for example if a cloned database has data integrity issues or not.
 
 ## Installation
@@ -25,13 +25,19 @@ Add the following variables in the env file with their particular values:
 >
 >DB_PASSWORD=password
 > 
->DB_NAME=MySQL_DB
+>DB_NAME=MySQL_database_name
+> 
+>DB_HOSTNAME=localhost
 
 ## How to use
 
-### Generate checksum files
+### Generate checksum files for the first DB
 
 > php dit.php [-v] generateChecksum
+
+### Generate checksum files for the second DB
+
+Modify __.env__ file with the new credentials and database name, and re-run the previous step. A second file will be created.
 
 ### Compare checksum files
 

@@ -42,7 +42,7 @@ try {
 
     switch ($result->command_name) {
         case 'generateChecksum':
-            $generator = new ChecksumGenerator($_ENV['DB_NAME'], $_ENV['DB_USER'], $_ENV['DB_PASSWORD']);
+            $generator = new ChecksumGenerator($_ENV['DB_NAME'], $_ENV['DB_USER'], $_ENV['DB_PASSWORD'], $_ENV['DB_HOST']);
             $generator->setVerbose($verboseFlag);
             $generator->generate();
             break;
