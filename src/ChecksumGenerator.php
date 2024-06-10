@@ -23,7 +23,7 @@ class ChecksumGenerator
         private readonly string $host
     )
     {
-        $this->dsn     = sprintf("mysql:host=%s;dbname=%s;charset=utf8", $host, $this->dbName);
+        $this->dsn     = sprintf("mysql:host=%s;dbname=%s;charset=utf8", $this->host, $this->dbName);
         $this->options = [
             PDO::ATTR_ERRMODE          => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_EMULATE_PREPARES => false,
