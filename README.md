@@ -27,7 +27,7 @@ Add the following variables in the env file with their particular values:
 > 
 >DB_NAME=MySQL_database_name
 > 
->DB_HOSTNAME=localhost
+>DB_HOST=localhost
 
 ## How to use
 
